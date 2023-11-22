@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "216007132332",
+    "project_id": "quiver-b4b65",
+    "storage_bucket": "quiver-b4b65.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:216007132332:android:ff85d480c5dd99b103cb09",
+        "android_client_info": {
+          "package_name": "com.subha"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "216007132332-m4cknk381t3tpntsqr5qvmolibh6ton6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.subha",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "216007132332-gbpuip2qel3gvfti427ld74sih2915rv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWU3mKtLbiLSGgewOWsbvqiuinpr5f8sk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "216007132332-gbpuip2qel3gvfti427ld74sih2915rv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
