@@ -6,10 +6,24 @@ import ArticleList from './ArticleScreens/ArticleList'
 import SingleArticle from './ArticleScreens/SingleArticle'
 const Stack = createNativeStackNavigator()
 export default function Home() {
+  const [clicked, setClicked] = useState(false);
+  const setClickedCallback = useCallback(
+    (isLoggedIn) => {
+      setClicked(isLoggedIn);
+    },
+    [setClicked]
+  );
+  const memoizedSetLoggedIn = useMemo(() => setClickedCallback, [setClickedCallback]);
+
   return (
    <Stack.Navigator>
-    <Stack.Screen name='ArticleList' component={ArticleList} options={{headerShown:false}}/>
-    <Stack.Screen name='SingleArticle' component={SingleArticle} options={{headerShown:false}}/>
+    {
+      !clicked ? (
+        <Stack.Screen name='ArticleList'  options={{ headerShown: false }} >
+           {(props) => <ArticleList {...props} setClickedCallback={memoizedSetLoggedIn} />}
+        </Stack.Screen>
+      ) : (<Stack.Screen name='SingleArticle' component={SingleArticle} options={{headerShown:false}}/>) 
+    }
    </Stack.Navigator>
   )
 }

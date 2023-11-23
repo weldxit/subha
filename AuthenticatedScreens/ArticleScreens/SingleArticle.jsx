@@ -18,7 +18,7 @@ import { ScrollView } from "react-native-virtualized-view";
 import * as Animatable from "react-native-animatable";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const ArticlePage = ({navigaition}) => {
+const ArticlePage = () => {
   //states
   const [article, setArticle] = useState(null);
   const [title, settitle] = useState(null);
@@ -52,55 +52,75 @@ const ArticlePage = ({navigaition}) => {
   // image	"https://firebasestorage.…d-4265-9145-b8fc17e5a296"
   // category_id	6
   //functions
-  const getArticle = async () =>{
-    await AsyncStorage.getItem('article').then((item)=>{
-      setArticle(item)
-      setcontent(item.content)
-      setposted_at(item.posted_at)
-      setcategory(item.category_id)
-      setimage(item.image)
-      setLoaded(!loaded)
-    }).then(async()=>{
-      await AsyncStorage.removeItem('article')
-    })
-  }
+  const getArticle = async () => {
+    try {
+      const storedArticle = await AsyncStorage.getItem('article');
+      if (storedArticle) {
+        const parsedArticle = JSON.parse(storedArticle);
+        const {title, content, posted_at, category_id, image } = parsedArticle;
+  
+        setArticle(parsedArticle);
+        settitle(title)
+        setcontent(content);
+        setposted_at(posted_at);
+        setcategory(category_id);
+        setimage(image);
+        setLoaded(true);
+  
+        // After successfully using the data, remove the stored article
+        await AsyncStorage.removeItem('article');
+      } else {
+        // Handle the case where no article is found in AsyncStorage
+        console.log('No article found in AsyncStorage');
+        setLoaded(true); // Set loaded to true to render the UI without data
+      }
+    } catch (error) {
+      // Handle AsyncStorage retrieval or parsing errors
+      console.error('Error retrieving or parsing article:', error);
+      setLoaded(true); // Set loaded to true to render the UI without data
+    }
+  };
+  
 
   const fetchQuotes = async () => {
     try {
       const response = await fetch('https://type.fit/api/quotes');
+      if (!response.ok) {
+        throw new Error('Failed to fetch quotes');
+      }
+  
       const data = await response.json();
       setQuote(data);
       const index = Math.floor(Math.random() * data.length);
       setRandomIndex(index);
     } catch (error) {
-      console.error('Error fetching quotes:', error);
+      console.error('Error fetching quotes:', error.message);
+      // Handle the error state or other actions as needed
     }
   };
 
-  const fetchMaymissed= async () => {
+  const fetchMaymissed = async () => {
     try {
       const response = await fetch('https://server-for-quiver.onrender.com/maymisseddata');
-      if (response.ok) {
-        const data = await response.json();
-        setMaymissedData(data);
-      } else {
-        // Handle the response error
-        console.error('Failed to fetch data');
+      if (!response.ok) {
+        throw new Error('Failed to fetch maymissed data');
       }
+      const data = await response.json();
+      setMaymissedData(data);
     } catch (error) {
-      // Handle the fetch error
-      console.error('Error fetching data:', error);
+      console.error('Error fetching maymissed data:', error.message);
+      // Handle the error state or other actions as needed
     }
   };
 
   const clickedMissed = async (item) =>{
-    setLoaded(!loaded)
+    setLoaded(false)
     settitle(item.title)
     setbody(item.content)
     setauthor(item.author)
     setposted_at(item.posted_at)
     setcategory(item.category_id)
-    setLoaded(!loaded)
+    setLoaded(true)
     fetchQuotes()
   }
 
@@ -156,7 +176,7 @@ const ArticlePage = ({navigaition}) => {
 
   //components
 
-  const MemoizedPopularItemToday = ({ item }) => {
+  const MemoizedPopularItemToday = React.memo(({ item }) => {
     return (
       <TouchableOpacity
         style={styles.cardContainer}
@@ -187,7 +207,7 @@ const ArticlePage = ({navigaition}) => {
         </View>
       </TouchableOpacity>
     );
-  };
+  });
   //data
  
   return (
@@ -223,7 +243,7 @@ const ArticlePage = ({navigaition}) => {
           animation={"fadeInDown"}
           duration={700}
         >
-          <Text style={styles.title}>{article?.title}</Text>
+          <Text style={styles.title}>{title}</Text>
         </Animatable.View>
         <Animatable.View animation={"bounceInUp"} duration={300}>
           <View style={styles.stamps}>
