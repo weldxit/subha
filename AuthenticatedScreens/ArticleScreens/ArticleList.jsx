@@ -15,6 +15,7 @@ import React, {
   useEffect,
   useMemo,
   useState,
+  useRef
 } from "react";
 
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -23,7 +24,7 @@ import { ScrollView } from 'react-native-virtualized-view'
 import { responsiveFontSize, responsiveHeight, responsiveWidth } from 'react-native-responsive-dimensions'
 import * as Animatable from "react-native-animatable";
 import axios from "axios";
-
+import msgpack from 'msgpack-lite';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function ArticleList({ setClickedCallback }) {
@@ -208,14 +209,25 @@ export default function ArticleList({ setClickedCallback }) {
 
   const renderArticle = async (item) => {
     try {
-      const stringifiedItem = JSON.stringify(item); // Convert item object to a string
-      await AsyncStorage.setItem('article', stringifiedItem); // Store the stringified item
-      setClickedCallback(true)
+      const stringifiedItem = JSON.stringify(item);
+
+      const serializedValue = msgpack.encode(stringifiedItem);
+
+      // Check the size of the article data before storing it
+      if (serializedValue.length > MAX_STORAGE_SIZE) {
+        // Handle larger data appropriately (e.g., notify the user, store in parts, etc.)
+        console.error('Article data is too large for AsyncStorage');
+        return;
+      }
+  
+      await AsyncStorage.setItem('article', serializedValue);
+      setClickedCallback(true);
     } catch (error) {
-      console.error('Error navigating to SingleArticle:', error);
-      // Handle the error (e.g., show an error message)
+      console.error('Error storing article in AsyncStorage:', error);
+      // Handle AsyncStorage error (e.g., show an error message)
     }
   };
+  
 
   useEffect(() => {
     const fetchData = async () => {

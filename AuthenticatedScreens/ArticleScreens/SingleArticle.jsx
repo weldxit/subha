@@ -17,7 +17,7 @@ import {
 import { ScrollView } from "react-native-virtualized-view";
 import * as Animatable from "react-native-animatable";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import msgpack from 'msgpack-lite';
 const ArticlePage = () => {
   //states
   const [article, setArticle] = useState(null);
@@ -56,7 +56,8 @@ const ArticlePage = () => {
     try {
       const storedArticle = await AsyncStorage.getItem('article');
       if (storedArticle) {
-        const parsedArticle = JSON.parse(storedArticle);
+        const decodedArticle = msgpack.decode(storedArticle)
+        const parsedArticle = JSON.parse(decodedArticle);
         const {title, content, posted_at, category_id, image } = parsedArticle;
   
         setArticle(parsedArticle);
