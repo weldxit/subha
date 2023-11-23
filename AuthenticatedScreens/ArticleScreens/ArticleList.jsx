@@ -199,7 +199,7 @@ const onRefreshFeed = useCallback(() => {
 
    const renderArticle = useCallback(async(item) => {
      await AsyncStorage.setItem('article',item)
-       navigation.navigate("Article");
+       navigation.navigate("SingleArticle");
     }, []);
     
     

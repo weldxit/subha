@@ -46,7 +46,7 @@ export default function LoginScreen({setLoggedInCallback}) {
       <Text style={{ fontSize: responsiveFontSize(4), fontWeight: 'bold', marginBottom:'10%',  textAlign:'center' }}>
         <Text style={{textAlign:'center', color:'red'}}>The Quiver </Text>{'\n'}Welcomes you !
       </Text>
-      <TypewriterText text={`' ପରିବର୍ତ୍ତନ ଆପଣଙ୍କୁ ଅପେକ୍ଷା କରିଛି '`} speed={165} />
+      <TypewriterText text={`' ପରିବର୍ତ୍ତନ ଆପଣଙ୍କୁ ଅପେକ୍ଷା କରିଛି '`} speed={320} />
       <View style={{marginTop:responsiveHeight(10)}}>
       <GoogleSigninButton
         style={{ alignSelf:'center', paddingHorizontal:20 }}

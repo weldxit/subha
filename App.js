@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useEffect, useState,useRef, useCallback, useMemo } from 'react';
+import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { StyleSheet, Text, View, AppState } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -18,7 +18,7 @@ export default function App() {
   const [splashComplete, setSplashComplete] = useState(false);
 
   // const [logactive, setLogactive] = useState(false)
-  
+
 
   const checkToken = async () => {
     try {
@@ -26,7 +26,7 @@ export default function App() {
 
       if (!Token) {
         const deviceToken = await messaging().getToken();
-        await axios.post('https://server-for-quiver.onrender.com/devicetokens', { deviceToken : deviceToken }).then(async(response)=>{
+        await axios.post('https://server-for-quiver.onrender.com/devicetokens', { deviceToken: deviceToken }).then(async (response) => {
           await AsyncStorage.setItem('devicetoken', response.token);
         });
       }
@@ -53,7 +53,7 @@ export default function App() {
     const splashTimeout = setTimeout(() => {
       setSplashComplete(true);
     }, 4000);
-  
+
     async function fetchData() {
       try {
         await checkToken();
@@ -62,30 +62,30 @@ export default function App() {
         console.error('Error fetching data:', error);
       }
     }
-  
+
     fetchData();
-    
+
     return () => {
       clearTimeout(splashTimeout);
-  
+
     };
   }, []);
-  
+
   const setLoggedInCallback = useCallback(
     (isLoggedIn) => {
       setLoggedIn(isLoggedIn);
     },
     [setLoggedIn]
   );
-const memoizedSetLoggedIn = useMemo(() => setLoggedInCallback, [setLoggedInCallback]);
+  const memoizedSetLoggedIn = useMemo(() => setLoggedInCallback, [setLoggedInCallback]);
 
   if (!splashComplete) {
     return <SplashScreen />;
   }
   return (
 
-   <NavigationContainer>
-  
+    <NavigationContainer>
+
       <NativeStack.Navigator>
         {!loggedIn ? (
           <NativeStack.Screen
@@ -93,7 +93,7 @@ const memoizedSetLoggedIn = useMemo(() => setLoggedInCallback, [setLoggedInCallb
             options={{ headerShown: false }}
           >
 
-{(props) => <LoginScreen {...props} setLoggedInCallback={memoizedSetLoggedIn} />}
+            {(props) => <LoginScreen {...props} setLoggedInCallback={memoizedSetLoggedIn} />}
           </NativeStack.Screen>
         ) : (
           <NativeStack.Screen
@@ -101,10 +101,10 @@ const memoizedSetLoggedIn = useMemo(() => setLoggedInCallback, [setLoggedInCallb
             component={EntryPoint}
             options={{ headerShown: false }}
           />
-         )}
-        
+        )}
+
       </NativeStack.Navigator>
-   </NavigationContainer>
+    </NavigationContainer>
 
   );
 }
