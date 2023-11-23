@@ -173,7 +173,7 @@ const ArticlePage = () => {
     } catch (error) {
       alert(error.message);
     }
-  }, [articleContent, link]);
+  }, [articleContent]);
 
   //components
 

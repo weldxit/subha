@@ -126,7 +126,7 @@ const UserProfileScreen = ({navigation}) => {
     <View style={styles.container}>
       <View style={[styles.bannerContainer, { width: "100%" }]}>
         <Image
-          source={require('../assets/logo/banner.png')}
+          source={require('../assets/logo/banner_100.jpg')}
           style={{
             height: responsiveHeight(18),
             width: "100%",
@@ -148,7 +148,11 @@ const UserProfileScreen = ({navigation}) => {
             {image ? <Image
               source={image}
               style={{ flex: 1, borderRadius: 75, resizeMode: "center" }}
-            />: <Text>{username ? username.at(0).toUpperCase() : 'Q'}</Text>}
+            /> : <Image
+            source={require('../assets/icon/archer.PNG')}
+            style={{ flex: 1, borderRadius: 75, resizeMode: "center" }}
+          />
+          }
           </View>
           <Text style={styles.userName}>{username}</Text>
         </View>
@@ -286,7 +290,7 @@ const styles = StyleSheet.create({
     justifyContent:'center',
     alignItems:'center'
   },
-  userAvatar: {
+   userAvatar: {
     width: responsiveWidth(35),
     height: responsiveWidth(35),
     borderWidth: 5,
